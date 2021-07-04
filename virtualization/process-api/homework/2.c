@@ -15,15 +15,17 @@
 
 
 int main(void) {
-    int fd = open("test.txt", O_RDWR | O_APPEND, S_IRWXU);
+    int fd = open("test.txt", O_CREAT | O_RDWR | O_APPEND, S_IRWXU);
     int rc = fork();
     if (rc < 0) {
         fprintf(stderr, "Error forking child process.\n");
         exit(EXIT_FAILURE);
     }
     if (rc == 0) {
+        printf("Child's fd: %d\n", fd);
         write(fd, "damian", 6);
     } else {
+        printf("Parent's fd: %d\n", fd);
         write(fd, "tabor", 5);
     }
     close(fd);
